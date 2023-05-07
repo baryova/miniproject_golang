@@ -40,7 +40,7 @@ func DoFavorite(userFav models.UserFavorite) (models.UserFavorite, error) {
 }
 
 func UndoFavorite(userFav models.UserFavorite) (models.UserFavorite, error) {
-	err := config.DB.Debug().
+	err := config.DB.
 		Where("film_id = ? AND user_id = ?", userFav.FilmId, userFav.UserId).
 		Unscoped().Delete(&userFav).Error
 	if err != nil {

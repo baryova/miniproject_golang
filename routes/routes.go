@@ -24,7 +24,7 @@ func New() *echo.Echo {
 	//User_Fav Routes
 	userFav := e.Group("/favorite")
 	userFav.GET("/list", controllers.GetUserFavorite, mid.JWT([]byte(constants.JWT_SECRET)))
-	userFav.POST("/:id", controllers.DoFavorite, mid.JWT([]byte(constants.JWT_SECRET)))
+	userFav.POST("/:id", controllers.DoFavorite, mid.JWT([]byte(constants.JWT_SECRET))) //do and undo
 
 	return e
 }

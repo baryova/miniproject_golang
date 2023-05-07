@@ -36,8 +36,6 @@ func CreateUserController(c echo.Context) error {
 
 	user.Password = string(hashPassword)
 
-	log.Println(user.Password)
-
 	user, err = database.CreateUser(user)
 
 	if err != nil {

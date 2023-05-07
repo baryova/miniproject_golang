@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"miniproject_golang/lib/database"
 	"miniproject_golang/middleware"
 	"miniproject_golang/models"
@@ -17,15 +16,15 @@ func GetUserFavorite(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	users, err := database.GetUserFavorite(userId)
+	userFav, err := database.GetUserFavorite(userId)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, models.Response{
-		Message: "success get all user",
-		Data:    users,
+		Message: "success get user favorite lists",
+		Data:    userFav,
 	})
 }
 
@@ -51,8 +50,6 @@ func DoFavorite(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-
-	fmt.Println("ajioewjfois: ", faved)
 
 	if faved == true {
 		userFav, err = database.UndoFavorite(userFav)
