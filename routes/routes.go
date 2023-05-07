@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"miniproject_golang/constants"
 	"miniproject_golang/controllers"
 	"miniproject_golang/middleware"
 
@@ -16,9 +17,14 @@ func New() *echo.Echo {
 
 	//User Routes
 	users := e.Group("/users")
-	users.GET("", controllers.GetUsersController)
+	users.GET("", controllers.GetUsersController, mid.JWT([]byte(constants.JWT_SECRET)))
 	users.POST("", controllers.CreateUserController)
 	users.POST("/login", controllers.LoginUserController)
+
+	//User_Fav Routes
+	userFav := e.Group("/favorite")
+	userFav.GET("/list", controllers.GetUserFavorite, mid.JWT([]byte(constants.JWT_SECRET)))
+	userFav.POST("/:id", controllers.DoFavorite, mid.JWT([]byte(constants.JWT_SECRET)))
 
 	return e
 }

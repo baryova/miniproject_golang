@@ -49,5 +49,7 @@ func InitDB() {
 }
 
 func InitMigrate() {
-	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.User{},
+		&models.Movie{}, &models.FilmToGenre{}, &models.Genre{},
+		&models.UserFavorite{})
 }
