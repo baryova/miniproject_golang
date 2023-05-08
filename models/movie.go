@@ -33,5 +33,5 @@ type MovieDetailResponse struct {
 	VoteCount   int     `json:"vote_count" form:"vote_count"`
 	Overview    string  `json:"overview" form:"overview"`
 	ReleaseDate string  `json:"release_date" form:"release_date"`
-	Genre       []Genre
+	Genres      []Genre `json:"genres" form:"genres"`
 }
