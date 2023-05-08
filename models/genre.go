@@ -4,6 +4,6 @@ import "gorm.io/gorm"
 
 type Genre struct {
 	gorm.Model
-	GenreId int `json:"genre_id" form:"genre_id"`
-	Name    int `json:"name" form:"name"`
+	Id   int `json:"id" form:"id"`
+	Name int `json:"name" form:"name"`
 }

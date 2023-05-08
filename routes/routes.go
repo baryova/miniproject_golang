@@ -26,5 +26,11 @@ func New() *echo.Echo {
 	userFav.GET("/list", controllers.GetUserFavorite, mid.JWT([]byte(constants.JWT_SECRET)))
 	userFav.POST("/:id", controllers.DoFavorite, mid.JWT([]byte(constants.JWT_SECRET))) //do and undo
 
+	//Movie Routes
+	movies := e.Group("/movies")
+	movies.GET("/now-playing", controllers.GetNowPlayingMovies)
+	movies.GET("/search", controllers.SearchMovies)
+	movies.GET("/:movie_id", controllers.GetDetailMovie)
+
 	return e
 }
