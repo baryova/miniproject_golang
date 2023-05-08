@@ -17,7 +17,7 @@ func New() *echo.Echo {
 
 	//User Routes
 	users := e.Group("/users")
-	users.GET("", controllers.GetUsersController, mid.JWT([]byte(constants.JWT_SECRET)))
+	users.GET("", controllers.GetUsersController)
 	users.POST("", controllers.CreateUserController)
 	users.POST("/login", controllers.LoginUserController)
 	users.PUT("/change-password", controllers.UpdateUserPassword, mid.JWT([]byte(constants.JWT_SECRET)))
