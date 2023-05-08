@@ -20,6 +20,8 @@ func New() *echo.Echo {
 	users.GET("", controllers.GetUsersController, mid.JWT([]byte(constants.JWT_SECRET)))
 	users.POST("", controllers.CreateUserController)
 	users.POST("/login", controllers.LoginUserController)
+	users.PUT("/change-password", controllers.UpdateUserPassword, mid.JWT([]byte(constants.JWT_SECRET)))
+	users.DELETE("/delete", controllers.DeleteUser, mid.JWT([]byte(constants.JWT_SECRET)))
 
 	//User_Fav Routes
 	userFav := e.Group("/favorite")

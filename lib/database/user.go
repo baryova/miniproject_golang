@@ -35,3 +35,36 @@ func LoginUser(user models.User) (models.User, error) {
 
 	return user, nil
 }
+
+func GetUsernameById(id int) (models.User, error) {
+	user := models.User{}
+
+	err := config.DB.Where("id = ?", id).First(&user).Error
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return user, nil
+}
+
+func UpdateUserPassword(userInput models.User) (models.User, error) {
+	user := models.User{}
+
+	err := config.DB.Model(&user).Where("username = ?", userInput.Username).
+		Update("password", userInput.Password).Error
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return userInput, err
+}
+
+func DeleteUser(user models.User) error {
+	err := config.DB.Where("username = ?", user.Username).Delete(&user).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}

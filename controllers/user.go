@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"miniproject_golang/lib/database"
 	"miniproject_golang/middleware"
@@ -74,5 +75,66 @@ func LoginUserController(c echo.Context) error {
 	return c.JSON(http.StatusOK, models.Response{
 		Message: "success login",
 		Data:    user,
+	})
+}
+
+func UpdateUserPassword(c echo.Context) error {
+	var newPassword string
+
+	userInput := models.User{}
+
+	userId, err := middleware.GetUserIdByToken(c)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	user, err := database.GetUsernameById(userId)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	fmt.Println("aaa : ", user)
+
+	c.Bind(&newPassword)
+
+	hashPassword, err := bcrypt.GenerateFromPassword([]byte(userInput.Password), bcrypt.MinCost)
+	if err != nil {
+		return err
+	}
+
+	userInput.Username = user.Username
+	userInput.Password = string(hashPassword)
+
+	newUser, err := database.UpdateUserPassword(userInput)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, models.Response{
+		Message: "success change password",
+		Data:    newUser,
+	})
+}
+
+func DeleteUser(c echo.Context) error {
+
+	userId, err := middleware.GetUserIdByToken(c)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	user, err := database.GetUsernameById(userId)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	err = database.DeleteUser(user)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, models.Response{
+		Message: "success delete user",
+		Data:    nil,
 	})
 }
