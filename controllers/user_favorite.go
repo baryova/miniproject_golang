@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo"
 )
 
+// Get all fav movies by logged in user
 func GetUserFavorite(c echo.Context) error {
 	userId, err := middleware.GetUserIdByToken(c)
 	if err != nil {
@@ -46,12 +47,13 @@ func DoFavorite(c echo.Context) error {
 	userFav.UserId = userId
 	userFav.FilmId = filmId
 
+	//get the fav status by logged in user and the filmId
 	faved, err := database.GetSameUserFavorite(userFav)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	if faved == true {
+	if faved == true { //if already fav , then undo the fav
 		userFav, err = database.UndoFavorite(userFav)
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, err.Error())

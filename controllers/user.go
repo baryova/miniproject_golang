@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"log"
 	"miniproject_golang/lib/database"
 	"miniproject_golang/middleware"
@@ -88,12 +87,11 @@ func UpdateUserPassword(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	//get username first by id, so can update password by searching the username
 	user, err := database.GetUsernameById(userId)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-
-	fmt.Println("aaa : ", user)
 
 	c.Bind(&newPassword)
 
@@ -103,7 +101,7 @@ func UpdateUserPassword(c echo.Context) error {
 	}
 
 	userInput.Username = user.Username
-	userInput.Password = string(hashPassword)
+	userInput.Password = string(hashPassword) //store hashpassword to userInput's password
 
 	newUser, err := database.UpdateUserPassword(userInput)
 	if err != nil {
@@ -123,6 +121,7 @@ func DeleteUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	//get username first by id, so can delete user by searching the username
 	user, err := database.GetUsernameById(userId)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
